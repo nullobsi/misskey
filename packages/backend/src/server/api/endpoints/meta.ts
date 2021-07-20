@@ -327,6 +327,24 @@ export const meta = {
 					optional: false as const, nullable: false as const
 				}
 			},
+			allowedHosts: {
+				type: 'array' as const,
+				optional: true as const, nullable: false as const,
+				items: {
+					type: 'string' as const,
+					optional: false as const, nullable: false as const
+				}
+			},
+			secureMode: {
+				type: 'boolean' as const,
+				optional: true as const, nullable: false as const,
+				default: false
+			},
+			privateMode: {
+				type: 'boolean' as const,
+				optional: true as const, nullable: false as const,
+				default: false
+			},
 			hcaptchaSecretKey: {
 				type: 'string' as const,
 				optional: true as const, nullable: true as const
@@ -470,7 +488,7 @@ export default define(meta, async (ps, me) => {
 			expiresAt: MoreThan(new Date())
 		},
 	});
-
+	// TODO: add secure mode, etc
 	const response: any = {
 		maintainerName: instance.maintainerName,
 		maintainerEmail: instance.maintainerEmail,

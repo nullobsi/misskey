@@ -32,6 +32,7 @@ export default class Resolver {
 	}
 
 	public async resolve(value: string | IObject): Promise<IObject> {
+		// TODO: ブロックしたインスタンスなら停止
 		if (value == null) {
 			throw new Error('resolvee is null (or undefined)');
 		}
