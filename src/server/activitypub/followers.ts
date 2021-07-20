@@ -10,8 +10,15 @@ import renderFollowUser from '../../remote/activitypub/renderer/follow-user';
 import { setResponseType } from '../activitypub';
 import { Users, Followings } from '../../models';
 import { LessThan } from 'typeorm';
+import checkFetch from "@/remote/activitypub/check-fetch";
 
 export default async (ctx: Router.RouterContext) => {
+	const verify = await checkFetch(ctx.req);
+	if (verify != 200) {
+		ctx.status = verify;
+		return;
+	}
+
 	const userId = ctx.params.user;
 
 	// Get 'cursor' parameter

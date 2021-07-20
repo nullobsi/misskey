@@ -5,8 +5,15 @@ import renderOrderedCollection from '../../remote/activitypub/renderer/ordered-c
 import { setResponseType } from '../activitypub';
 import renderNote from '../../remote/activitypub/renderer/note';
 import { Users, Notes, UserNotePinings } from '../../models';
+import checkFetch from "@/remote/activitypub/check-fetch";
 
 export default async (ctx: Router.RouterContext) => {
+	const verify = await checkFetch(ctx.req);
+	if (verify != 200) {
+		ctx.status = verify;
+		return;
+	}
+
 	const userId = ctx.params.user;
 
 	// Verify user
