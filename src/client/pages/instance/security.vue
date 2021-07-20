@@ -34,6 +34,7 @@ import FormSwitch from '@client/components/form/switch.vue';
 import FormButton from '@client/components/form/button.vue';
 import FormBase from '@client/components/form/base.vue';
 import FormGroup from '@client/components/form/group.vue';
+import FormTextarea from '@client/components/form/textarea.vue';
 import FormInfo from '@client/components/form/info.vue';
 import FormSuspense from '@client/components/form/suspense.vue';
 import * as os from '@client/os';
@@ -49,6 +50,7 @@ export default defineComponent({
 		FormButton,
 		FormInfo,
 		FormSuspense,
+		FormTextarea
 	},
 
 	emits: ['info'],
