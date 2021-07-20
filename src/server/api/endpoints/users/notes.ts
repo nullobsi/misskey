@@ -12,6 +12,8 @@ import { Brackets } from 'typeorm';
 export const meta = {
 	tags: ['users', 'notes'],
 
+	requireCredentialPrivateMode: true as const,
+
 	params: {
 		userId: {
 			validator: $.type(ID),

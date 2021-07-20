@@ -15,6 +15,7 @@ import { generateChannelQuery } from '../../common/generate-channel-query';
 
 export const meta = {
 	tags: ['notes'],
+	requireCredentialPrivateMode: true as const,
 
 	requireCredential: true as const,
 

@@ -13,6 +13,8 @@ import { generateMutedNoteQuery } from '../../common/generate-muted-note-query';
 export const meta = {
 	tags: ['notes'],
 
+	requireCredentialPrivateMode: true as const,
+
 	params: {
 		withFiles: {
 			validator: $.optional.bool,

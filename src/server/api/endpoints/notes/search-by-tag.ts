@@ -11,6 +11,7 @@ import { normalizeForSearch } from '@/misc/normalize-for-search';
 
 export const meta = {
 	tags: ['notes', 'hashtags'],
+	requireCredentialPrivateMode: true as const,
 
 	params: {
 		tag: {

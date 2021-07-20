@@ -5,6 +5,7 @@ import { hashtagChart } from '../../../../services/chart';
 
 export const meta = {
 	tags: ['charts', 'hashtags'],
+	requireCredentialPrivateMode: true as const,
 
 	params: {
 		span: {

@@ -6,6 +6,7 @@ import { perUserNotesChart } from '../../../../../services/chart';
 
 export const meta = {
 	tags: ['charts', 'users', 'notes'],
+	requireCredentialPrivateMode: true as const,
 
 	params: {
 		span: {

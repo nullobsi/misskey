@@ -5,6 +5,7 @@ import { notesChart } from '../../../../services/chart';
 
 export const meta = {
 	tags: ['charts', 'notes'],
+	requireCredentialPrivateMode: true as const,
 
 	params: {
 		span: {

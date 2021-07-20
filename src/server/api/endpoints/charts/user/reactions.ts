@@ -6,6 +6,7 @@ import { perUserReactionsChart } from '../../../../../services/chart';
 
 export const meta = {
 	tags: ['charts', 'users', 'reactions'],
+	requireCredentialPrivateMode: true as const,
 
 	params: {
 		span: {

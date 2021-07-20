@@ -5,6 +5,7 @@ import { instanceChart } from '../../../../services/chart';
 
 export const meta = {
 	tags: ['charts'],
+	requireCredentialPrivateMode: true as const,
 
 	params: {
 		span: {
