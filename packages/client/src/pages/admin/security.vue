@@ -36,6 +36,7 @@ import FormSwitch from '@/components/debobigego/switch.vue';
 import FormButton from '@/components/debobigego/button.vue';
 import FormBase from '@/components/debobigego/base.vue';
 import FormGroup from '@/components/debobigego/group.vue';
+import FormTextarea from '@/components/debobigego/textarea.vue';
 import FormInfo from '@/components/debobigego/info.vue';
 import FormSuspense from '@/components/debobigego/suspense.vue';
 import * as os from '@/os';
@@ -51,6 +52,7 @@ export default defineComponent({
 		FormButton,
 		FormInfo,
 		FormSuspense,
+		FormTextarea
 	},
 
 	emits: ['info'],
