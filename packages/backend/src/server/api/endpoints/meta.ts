@@ -6,6 +6,7 @@ import { Ads, Emojis, Users } from '@/models/index';
 import { DB_MAX_NOTE_TEXT_LENGTH } from '@/misc/hard-limits';
 import { MoreThan } from 'typeorm';
 
+// TODO: secure modeならoptionalに設定？
 export const meta = {
 	tags: ['meta'],
 
@@ -488,7 +489,7 @@ export default define(meta, async (ps, me) => {
 			expiresAt: MoreThan(new Date())
 		},
 	});
-	// TODO: add secure mode, etc
+
 	const response: any = {
 		maintainerName: instance.maintainerName,
 		maintainerEmail: instance.maintainerEmail,
@@ -504,6 +505,8 @@ export default define(meta, async (ps, me) => {
 		feedbackUrl: instance.feedbackUrl,
 
 		secure: config.https != null,
+		secureMode: instance.secureMode,
+		privateMode: instance.privateMode,
 
 		disableRegistration: instance.disableRegistration,
 		disableLocalTimeline: instance.disableLocalTimeline,
@@ -523,8 +526,8 @@ export default define(meta, async (ps, me) => {
 		backgroundImageUrl: instance.backgroundImageUrl,
 		logoImageUrl: instance.logoImageUrl,
 		maxNoteTextLength: Math.min(instance.maxNoteTextLength, DB_MAX_NOTE_TEXT_LENGTH),
-		emojis: await Emojis.packMany(emojis),
-		ads: ads.map(ad => ({
+		emojis: instance.privateMode ? [] : await Emojis.packMany(emojis),
+		ads: instance.privateMode ? [] : ads.map(ad => ({
 			id: ad.id,
 			url: ad.url,
 			place: ad.place,
@@ -542,8 +545,8 @@ export default define(meta, async (ps, me) => {
 		translatorAvailable: instance.deeplAuthKey != null,
 
 		...(ps.detail ? {
-			pinnedPages: instance.pinnedPages,
-			pinnedClipId: instance.pinnedClipId,
+			pinnedPages: instance.privateMode ? [] : instance.pinnedPages,
+			pinnedClipId: instance.privateMode ? [] : instance.pinnedClipId,
 			cacheRemoteFiles: instance.cacheRemoteFiles,
 			proxyRemoteFiles: instance.proxyRemoteFiles,
 			requireSetup: (await Users.count({
@@ -553,9 +556,11 @@ export default define(meta, async (ps, me) => {
 	};
 
 	if (ps.detail) {
-		const proxyAccount = instance.proxyAccountId ? await Users.pack(instance.proxyAccountId).catch(() => null) : null;
+		if (!instance.privateMode) {
+			const proxyAccount = instance.proxyAccountId ? await Users.pack(instance.proxyAccountId).catch(() => null) : null;
+			response.proxyAccountName = proxyAccount ? proxyAccount.username : null;
+		}
 
-		response.proxyAccountName = proxyAccount ? proxyAccount.username : null;
 		response.features = {
 			registration: !instance.disableRegistration,
 			localTimeLine: !instance.disableLocalTimeline,
