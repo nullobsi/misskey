@@ -11,6 +11,18 @@
 		<FormSwitch v-model="enableRegistration">{{ $ts.enableRegistration }}</FormSwitch>
 
 		<FormSwitch v-model="emailRequiredForSignup">{{ $ts.emailRequiredForSignup }}</FormSwitch>
+		<FormSwitch v-model="secureMode">
+			{{ $ts.secureMode }}
+			<template #desc>{{ $ts.secureModeInfo }}</template>
+		</FormSwitch>
+		<FormSwitch v-model="privateMode">
+			{{ $ts.privateMode }}
+			<template #desc>{{ $ts.privateModeInfo }}</template>
+		</FormSwitch>
+		<FormTextarea v-model="allowedHosts">
+			<span>{{ $ts.allowedInstances }}</span>
+			<template #desc>{{ $ts.allowedInstancesDescription }}</template>
+		</FormTextarea>
 
 		<FormButton @click="save" primary><i class="fas fa-save"></i> {{ $ts.save }}</FormButton>
 	</FormSuspense>
@@ -54,6 +66,10 @@ export default defineComponent({
 			enableRecaptcha: false,
 			enableRegistration: false,
 			emailRequiredForSignup: false,
+
+			secureMode: false,
+			privateMode: false,
+			allowedHosts: '',
 		}
 	},
 
@@ -67,6 +83,9 @@ export default defineComponent({
 			this.enableHcaptcha = meta.enableHcaptcha;
 			this.enableRecaptcha = meta.enableRecaptcha;
 			this.enableRegistration = !meta.disableRegistration;
+			this.secureMode = meta.secureMode;
+			this.privateMode = meta.privateMode;
+			this.allowedHosts = meta.allowedHosts.join('\n');
 			this.emailRequiredForSignup = meta.emailRequiredForSignup;
 		},
 	
@@ -74,6 +93,9 @@ export default defineComponent({
 			os.apiWithDialog('admin/update-meta', {
 				disableRegistration: !this.enableRegistration,
 				emailRequiredForSignup: this.emailRequiredForSignup,
+				secureMode: this.secureMode,
+				privateMode: this.privateMode,
+				allowedHosts: this.allowedHosts.split('\n'),
 			}).then(() => {
 				fetchInstance();
 			});
