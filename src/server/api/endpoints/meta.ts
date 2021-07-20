@@ -570,6 +570,7 @@ export default define(meta, async (ps, me) => {
 			response.pinnedUsers = instance.pinnedUsers;
 			response.hiddenTags = instance.hiddenTags;
 			response.blockedHosts = instance.blockedHosts;
+			response.allowedHosts = instance.allowedHosts;
 			response.hcaptchaSecretKey = instance.hcaptchaSecretKey;
 			response.recaptchaSecretKey = instance.recaptchaSecretKey;
 			response.proxyAccountId = instance.proxyAccountId;
