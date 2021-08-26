@@ -19,7 +19,7 @@
 			{{ $ts.privateMode }}
 			<template #desc>{{ $ts.privateModeInfo }}</template>
 		</FormSwitch>
-		<FormTextarea v-model="allowedHosts" disabled="{{!privateMode}}">
+		<FormTextarea v-model="allowedHosts" v-if="privateMode">
 			<span>{{ $ts.allowedInstances }}</span>
 			<template #desc>{{ $ts.allowedInstancesDescription }}</template>
 		</FormTextarea>
