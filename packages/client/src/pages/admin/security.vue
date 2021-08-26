@@ -11,7 +11,7 @@
 		<FormSwitch v-model="enableRegistration">{{ $ts.enableRegistration }}</FormSwitch>
 
 		<FormSwitch v-model="emailRequiredForSignup">{{ $ts.emailRequiredForSignup }}</FormSwitch>
-		<FormSwitch v-model="secureMode">
+		<FormSwitch v-model="secureMode || privateMode" disabled="{{privateMode}}">
 			{{ $ts.secureMode }}
 			<template #desc>{{ $ts.secureModeInfo }}</template>
 		</FormSwitch>
@@ -19,7 +19,7 @@
 			{{ $ts.privateMode }}
 			<template #desc>{{ $ts.privateModeInfo }}</template>
 		</FormSwitch>
-		<FormTextarea v-model="allowedHosts">
+		<FormTextarea v-model="allowedHosts" disabled="{{!privateMode}}">
 			<span>{{ $ts.allowedInstances }}</span>
 			<template #desc>{{ $ts.allowedInstancesDescription }}</template>
 		</FormTextarea>
