@@ -15,8 +15,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="border-left-collapse"> </div>
 	<XSub v-for="reply in replies" :key="reply.id" :note="reply" class="reply" :detail="true" :children="true"/>
+	<div class="border-left-collapse"> </div>
 </div>
 </template>
 
@@ -96,18 +96,22 @@ export default defineComponent({
 		&.max-width_450px {
 			padding: 10px 0 0 8px;
 		}
+
+		+ .border-left-collapse {
+			width: 16px;
+			margin-top: 10px;
+			height: 100%;
+			grid-row: 2;
+			border-left: solid 0.5px var(--divider);
+		}
+
+		+ .border-left-collapse:hover {
+			border-left-color: var(--accent);
+		}
 	}
 
-	> .border-left-collapse {
-		width: 16px;
-		margin-top: 10px;
-		height: 100%;
-		grid-row: 2;
-		border-left: solid 0.5px var(--divider);
-	}
-
-	> .border-left-collapse:hover {
-		border-left-color: var(--accent);
+	.border-left-collapse {
+		display: none;
 	}
 
 	> .main {
