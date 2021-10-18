@@ -15,6 +15,7 @@
 			</div>
 		</div>
 	</div>
+	<div class="border-left-collapse"> </div>
 	<XSub v-for="reply in replies" :key="reply.id" :note="reply" class="reply" :detail="true" :children="true"/>
 </div>
 </template>
@@ -81,6 +82,8 @@ export default defineComponent({
 .wrpstxzv {
 	padding: 16px 32px;
 	font-size: 0.9em;
+	display: grid;
+	grid-template-columns: 16px auto;
 
 	&.max-width_450px {
 		padding: 14px 16px;
@@ -95,8 +98,22 @@ export default defineComponent({
 		}
 	}
 
+	> .border-left-collapse {
+		width: 16px;
+		margin-top: 10px;
+		height: 100%;
+		grid-row: 2;
+		border-left: solid 0.5px var(--divider);
+	}
+
+	> .border-left-collapse:hover {
+		border-left-color: var(--accent);
+	}
+
 	> .main {
 		display: flex;
+		grid-row: 1;
+		grid-column: 1/3;
 
 		> .avatar {
 			flex-shrink: 0;
@@ -139,8 +156,10 @@ export default defineComponent({
 	}
 
 	> .reply {
-		border-left: solid 0.5px var(--divider);
 		margin-top: 10px;
+		padding-left: 0;
+		grid-row: 2;
+		grid-column: 2/3;
 	}
 }
 </style>
