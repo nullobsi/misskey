@@ -16,7 +16,7 @@
 		</div>
 	</div>
 	<XSub v-for="reply in replies" :key="reply.id" :note="reply" class="reply" :detail="true" :children="true"/>
-	<div class="border-left-collapse"> </div>
+	<div class="border-left-collapse" @click.stop="collapse"> </div>
 </div>
 </template>
 
@@ -34,6 +34,12 @@ export default defineComponent({
 		XNoteHeader,
 		XSubNoteContent,
 		XCwButton,
+	},
+
+	methods: {
+		collapse(event) {
+			event.target.parent.classList.toggle("collapsed")
+		}
 	},
 
 	props: {
@@ -103,10 +109,19 @@ export default defineComponent({
 			height: 100%;
 			grid-row: 2;
 			border-left: solid 0.5px var(--divider);
+			display: block;
 		}
 
 		+ .border-left-collapse:hover {
 			border-left-color: var(--accent);
+		}
+	}
+
+	&.collapsed > &.children {
+		display: none;
+
+		+ .border-left-collapse {
+			border-left-style: dashed;
 		}
 	}
 
