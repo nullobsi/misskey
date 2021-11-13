@@ -10,6 +10,7 @@ export const meta = {
 	tags: ['users', 'reactions'],
 
 	requireCredential: false as const,
+	requireCredentialPrivateMode: true as const,
 
 	params: {
 		userId: {

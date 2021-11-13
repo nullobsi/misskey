@@ -6,6 +6,7 @@ import { Ads, Emojis, Users } from '@/models/index';
 import { DB_MAX_NOTE_TEXT_LENGTH } from '@/misc/hard-limits';
 import { MoreThan } from 'typeorm';
 
+// TODO: secure modeならoptionalに設定？
 export const meta = {
 	tags: ['meta'],
 
@@ -327,6 +328,24 @@ export const meta = {
 					optional: false as const, nullable: false as const
 				}
 			},
+			allowedHosts: {
+				type: 'array' as const,
+				optional: true as const, nullable: false as const,
+				items: {
+					type: 'string' as const,
+					optional: false as const, nullable: false as const
+				}
+			},
+			secureMode: {
+				type: 'boolean' as const,
+				optional: true as const, nullable: false as const,
+				default: false
+			},
+			privateMode: {
+				type: 'boolean' as const,
+				optional: true as const, nullable: false as const,
+				default: false
+			},
 			hcaptchaSecretKey: {
 				type: 'string' as const,
 				optional: true as const, nullable: true as const
@@ -486,6 +505,8 @@ export default define(meta, async (ps, me) => {
 		feedbackUrl: instance.feedbackUrl,
 
 		secure: config.https != null,
+		secureMode: instance.secureMode,
+		privateMode: instance.privateMode,
 
 		disableRegistration: instance.disableRegistration,
 		disableLocalTimeline: instance.disableLocalTimeline,
@@ -505,8 +526,8 @@ export default define(meta, async (ps, me) => {
 		backgroundImageUrl: instance.backgroundImageUrl,
 		logoImageUrl: instance.logoImageUrl,
 		maxNoteTextLength: Math.min(instance.maxNoteTextLength, DB_MAX_NOTE_TEXT_LENGTH),
-		emojis: await Emojis.packMany(emojis),
-		ads: ads.map(ad => ({
+		emojis: instance.privateMode && !me ? [] : await Emojis.packMany(emojis),
+		ads: instance.privateMode && !me ? [] : ads.map(ad => ({
 			id: ad.id,
 			url: ad.url,
 			place: ad.place,
@@ -524,8 +545,8 @@ export default define(meta, async (ps, me) => {
 		translatorAvailable: instance.deeplAuthKey != null,
 
 		...(ps.detail ? {
-			pinnedPages: instance.pinnedPages,
-			pinnedClipId: instance.pinnedClipId,
+			pinnedPages: instance.privateMode && !me ? [] : instance.pinnedPages,
+			pinnedClipId: instance.privateMode && !me ? [] : instance.pinnedClipId,
 			cacheRemoteFiles: instance.cacheRemoteFiles,
 			proxyRemoteFiles: instance.proxyRemoteFiles,
 			requireSetup: (await Users.count({
@@ -535,9 +556,11 @@ export default define(meta, async (ps, me) => {
 	};
 
 	if (ps.detail) {
-		const proxyAccount = instance.proxyAccountId ? await Users.pack(instance.proxyAccountId).catch(() => null) : null;
+		if (!instance.privateMode || me) {
+			const proxyAccount = instance.proxyAccountId ? await Users.pack(instance.proxyAccountId).catch(() => null) : null;
+			response.proxyAccountName = proxyAccount ? proxyAccount.username : null;
+		}
 
-		response.proxyAccountName = proxyAccount ? proxyAccount.username : null;
 		response.features = {
 			registration: !instance.disableRegistration,
 			localTimeLine: !instance.disableLocalTimeline,
@@ -559,6 +582,7 @@ export default define(meta, async (ps, me) => {
 			response.pinnedUsers = instance.pinnedUsers;
 			response.hiddenTags = instance.hiddenTags;
 			response.blockedHosts = instance.blockedHosts;
+			response.allowedHosts = instance.allowedHosts;
 			response.hcaptchaSecretKey = instance.hcaptchaSecretKey;
 			response.recaptchaSecretKey = instance.recaptchaSecretKey;
 			response.proxyAccountId = instance.proxyAccountId;
