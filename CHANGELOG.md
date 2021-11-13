@@ -187,6 +187,9 @@
 
 ## 12.89.1 (2021/08/24)
 
+### Features
+- Added a toggle to show replies for followed users in all timelines
+
 ### Improvements
 - クライアントのデザインの調整
 

@@ -37,6 +37,7 @@
 		<template #caption>{{ $ts._profile.metadataDescription }}</template>
 	</FormGroup>
 
+	<FormSwitch v-model="showTimelineReplies">{{ $ts.flagShowTimelineReplies }}<template #desc>{{ $ts.flagShowTimelineRepliesDescription }}</template></FormSwitch>
 	<FormSwitch v-model="isCat">{{ $ts.flagAsCat }}<template #desc>{{ $ts.flagAsCatDescription }}</template></FormSwitch>
 
 	<FormSwitch v-model="isBot">{{ $ts.flagAsBot }}<template #desc>{{ $ts.flagAsBotDescription }}</template></FormSwitch>
@@ -98,6 +99,7 @@ export default defineComponent({
 			bannerId: null,
 			isBot: false,
 			isCat: false,
+			showTimelineReplies: false,
 			alwaysMarkNsfw: false,
 			saving: false,
 		}
@@ -113,6 +115,7 @@ export default defineComponent({
 		this.bannerId = this.$i.bannerId;
 		this.isBot = this.$i.isBot;
 		this.isCat = this.$i.isCat;
+		this.showTimelineReplies = this.$i.showTimelineReplies;
 		this.alwaysMarkNsfw = this.$i.alwaysMarkNsfw;
 
 		this.fieldName0 = this.$i.fields[0] ? this.$i.fields[0].name : null;
@@ -131,6 +134,7 @@ export default defineComponent({
 		this.$watch('lang', this.save);
 		this.$watch('isBot', this.save);
 		this.$watch('isCat', this.save);
+		this.$watch('showTimelineReplies', this.save);
 		this.$watch('alwaysMarkNsfw', this.save);
 	},
 
@@ -239,6 +243,7 @@ export default defineComponent({
 				lang: this.lang || null,
 				isBot: !!this.isBot,
 				isCat: !!this.isCat,
+				showTimelineReplies: !!this.showTimelineReplies,
 				alwaysMarkNsfw: !!this.alwaysMarkNsfw,
 			}).then(i => {
 				this.saving = false;
