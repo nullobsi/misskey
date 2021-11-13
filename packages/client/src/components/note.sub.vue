@@ -1,5 +1,5 @@
 <template>
-<div class="wrpstxzv" :class="{ children }" v-size="{ max: [450] }">
+<div class="wrpstxzv" :class="{ children }" v-size="{ max: [450] }" @click.stop="checkCollapse">
 	<div class="main">
 		<MkAvatar class="avatar" :user="note.user"/>
 		<div class="body">
@@ -63,6 +63,25 @@ export default defineComponent({
 			replies: [],
 		};
 	},
+
+	methods: {
+		checkCollapse(event) {
+			// calculate x position within the element
+			var rect = event.target.getBoundingClientRect();
+			var x = event.clientX - rect.left;
+
+			// the margin for direct replies is wider
+			let padding = 32;
+			if (event.target.classList.contains("children")) {
+				padding = 16;
+			}
+
+			if (x < padding) {
+				// this click was in the left padding
+				event.target.classList.toggle('collapsed');
+			}
+		}
+	}
 
 	created() {
 		if (this.detail) {
@@ -142,5 +161,33 @@ export default defineComponent({
 		border-left: solid 0.5px var(--divider);
 		margin-top: 10px;
 	}
+
+	&.collapsed {
+		max-height: 30px;
+		overflow: hidden;
+		/* make it clear that this post is collapsed */
+		border-left: dashed 2px var(--accentedBg);
+
+		> .children {
+			/* hide any further children */
+			display: none;
+		}
+
+		position: relative;
+
+		&:after {
+			display: block;
+			content: '';
+			position: absolute;
+			bottom: 0;
+			z-index: 2;
+			height: 100%;
+			width: 100%;
+			background: linear-gradient(0deg, var(--panel), #0000 10px);
+		}
+	}
+}
+.wrpstxzv.reply:hover {
+	border-left-color: var(--accent);
 }
 </style>
