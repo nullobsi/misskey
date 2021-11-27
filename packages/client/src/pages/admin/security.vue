@@ -3,9 +3,9 @@
 	<FormSuspense :p="init">
 		<FormLink to="/admin/bot-protection">
 			<i class="fas fa-shield-alt"></i> {{ $ts.botProtection }}
-			<template #suffix v-if="enableHcaptcha">hCaptcha</template>
-			<template #suffix v-else-if="enableRecaptcha">reCAPTCHA</template>
-			<template #suffix v-else>{{ $ts.none }} ({{ $ts.notRecommended }})</template>
+			<template v-if="enableHcaptcha" #suffix>hCaptcha</template>
+			<template v-else-if="enableRecaptcha" #suffix>reCAPTCHA</template>
+			<template v-else #suffix>{{ $ts.none }} ({{ $ts.notRecommended }})</template>
 		</FormLink>
 
 		<FormSwitch v-model="enableRegistration">{{ $ts.enableRegistration }}</FormSwitch>
@@ -24,7 +24,7 @@
 			<template #desc>{{ $ts.allowedInstancesDescription }}</template>
 		</FormTextarea>
 
-		<FormButton @click="save" primary><i class="fas fa-save"></i> {{ $ts.save }}</FormButton>
+		<FormButton primary @click="save"><i class="fas fa-save"></i> {{ $ts.save }}</FormButton>
 	</FormSuspense>
 </FormBase>
 </template>
