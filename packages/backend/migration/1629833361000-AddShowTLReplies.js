@@ -1,6 +1,6 @@
 class addShowTLReplies1629833361000 {
 	constructor() {
-    name = 'addShowTLReplies1629833361000'
+    this.name = 'addShowTLReplies1629833361000'
 	}
 
 	async up(queryRunner) {
