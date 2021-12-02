@@ -14,4 +14,4 @@ class addShowTLReplies1629833361000 {
 
 }
 
-module.addShowTLReplies1629833361000 = addShowTLReplies1629833361000;
+exports.addShowTLReplies1629833361000 = addShowTLReplies1629833361000;
