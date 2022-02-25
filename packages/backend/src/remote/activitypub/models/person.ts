@@ -208,7 +208,7 @@ export async function createPerson(value: string | IObject, resolver: Resolver):
 				tags,
 				isBot,
 				isCat: (person as any).isCat === true,
-				showTimelineReplies: false,
+				showTimelineReplies: true,
 				movedToId: person.movedTo,
 			})) as IRemoteUser;
 
