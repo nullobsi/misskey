@@ -184,7 +184,7 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 				tags,
 				isBot,
 				isCat: (person as any).isCat === true,
-				showTimelineReplies: false,
+				showTimelineReplies: true,
 			})) as IRemoteUser;
 
 			await transactionalEntityManager.save(new UserProfile({
