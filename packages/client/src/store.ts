@@ -65,18 +65,24 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	showAds: {
 		where: 'account',
-		default: true,
+		default: false,
 	},
 	menu: {
 		where: 'deviceAccount',
 		default: [
-			'notifications',,
-			'followRequests',
+			'notifications',
+			'mentions',
 			'messaging',
+			'followRequests',
+			'-',
 			'explore',
-			'favorites',
-			'channels',
-			'search',
+			'-',
+			'drive',
+			'pages',
+			'gallery',
+			'clips',
+			'-',
+			'search'
 		],
 	},
 	visibility: {
@@ -161,11 +167,11 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	useBlurEffectForModal: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	useBlurEffect: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	showFixedPostForm: {
 		where: 'device',
@@ -181,7 +187,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	showGapBetweenNotesInTimeline: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	darkMode: {
 		where: 'device',
@@ -189,7 +195,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	instanceTicker: {
 		where: 'device',
-		default: 'remote' as 'none' | 'remote' | 'always',
+		default: 'always' as 'none' | 'remote' | 'always',
 	},
 	reactionPickerSize: {
 		where: 'device',
@@ -273,8 +279,8 @@ type Plugin = {
 /**
  * 常にメモリにロードしておく必要がないような設定情報を保管するストレージ(非リアクティブ)
  */
-import lightTheme from '@/themes/l-rosepinedawn.json5';
-import darkTheme from '@/themes/d-rosepine.json5';
+import lightTheme from '@/themes/l-gruvbox-light.json5';
+import darkTheme from '@/themes/d-gruvbox-dark.json5';
 
 export class ColdDeviceStorage {
 	public static default = {
