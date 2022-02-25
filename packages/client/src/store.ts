@@ -68,15 +68,18 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'deviceAccount',
 		default: [
 			'notifications',
-			'favorites',
-			'drive',
+			'mentions',
+			'messaging',
 			'followRequests',
 			'-',
 			'explore',
-			'announcements',
-			'search',
 			'-',
-			'ui',
+			'drive',
+			'pages',
+			'gallery',
+			'clips',
+			'-',
+			'search'
 		],
 	},
 	visibility: {
@@ -161,11 +164,11 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	useBlurEffectForModal: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	useBlurEffect: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	showFixedPostForm: {
 		where: 'device',
@@ -189,7 +192,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	instanceTicker: {
 		where: 'device',
-		default: 'remote' as 'none' | 'remote' | 'always',
+		default: 'always' as 'none' | 'remote' | 'always',
 	},
 	reactionPickerSize: {
 		where: 'device',
@@ -229,7 +232,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	squareAvatars: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	postFormWithHashtags: {
 		where: 'device',
@@ -269,8 +272,8 @@ type Plugin = {
 /**
  * 常にメモリにロードしておく必要がないような設定情報を保管するストレージ(非リアクティブ)
  */
-import lightTheme from '@/themes/l-light.json5';
-import darkTheme from '@/themes/d-green-lime.json5';
+import lightTheme from '@/themes/l-gruvbox-light.json5';
+import darkTheme from '@/themes/d-gruvbox-dark.json5';
 
 export class ColdDeviceStorage {
 	public static default = {
@@ -280,7 +283,7 @@ export class ColdDeviceStorage {
 		plugins: [] as Plugin[],
 		mediaVolume: 0.5,
 		sound_masterVolume: 0.3,
-		sound_note: { type: 'syuilo/down', volume: 1 },
+		sound_note: { type: 'syuilo/down', volume: 0 },
 		sound_noteMy: { type: 'syuilo/up', volume: 1 },
 		sound_notification: { type: 'syuilo/pope2', volume: 1 },
 		sound_chat: { type: 'syuilo/pope1', volume: 1 },
