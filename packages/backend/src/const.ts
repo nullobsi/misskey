@@ -1,4 +1,4 @@
-export const MAX_NOTE_TEXT_LENGTH = 3000;
+export const MAX_NOTE_TEXT_LENGTH = 8192;
 
 export const SECOND = 1000;
 export const SEC = 1000;
