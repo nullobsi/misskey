@@ -22,6 +22,7 @@ const languages = [
 	'cs-CZ',
 	'de-DE',
 	'en-US',
+	'en-NM',
 	'es-ES',
 	'fr-FR',
 	'id-ID',
