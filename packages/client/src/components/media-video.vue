@@ -6,19 +6,39 @@
 	</div>
 </div>
 <div v-else class="kkjnbbplepmiyuadieoenjgutgcmtsvu">
-	<video
-		:poster="video.thumbnailUrl"
-		:title="video.comment"
-		:alt="video.comment"
-		preload="none"
-		controls
-		@contextmenu.stop
+	<VuePlyr
+		:options="{
+			controls: [
+				'play-large',
+				'restart',
+				'play',
+				'progress',
+				'current-time',
+				'duration',
+				'mute',
+				'volume',
+				'settings',
+				'pip',
+				'download',
+				'fullscreen'
+			],
+			disableContextMenu: false,
+		}"
 	>
-		<source 
-			:src="video.url" 
-			:type="video.type"
+		<video
+			:poster="video.thumbnailUrl"
+			:title="video.comment"
+			:aria-label="video.comment"
+			preload="none"
+			controls
+			@contextmenu.stop
 		>
-	</video>
+			<source
+				:src="video.url"
+				:type="video.type"
+			>
+		</video>
+	</VuePlyr>
 	<i class="fas fa-eye-slash" @click="hide = true"></i>
 </div>
 </template>
@@ -26,8 +46,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import * as foundkey from 'foundkey-js';
+import VuePlyr from 'vue-plyr';
 import { defaultStore } from '@/store';
 import { i18n } from '@/i18n';
+import 'vue-plyr/dist/vue-plyr.css';
 
 const props = defineProps<{
 	video: foundkey.entities.DriveFile;
@@ -39,6 +61,7 @@ const hide = ref((defaultStore.state.nsfw === 'force') ? true : props.video.isSe
 <style lang="scss" scoped>
 .kkjnbbplepmiyuadieoenjgutgcmtsvu {
 	position: relative;
+	--plyr-color-main: var(--accent);
 
 	> i {
 		display: block;

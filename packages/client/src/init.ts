@@ -39,6 +39,7 @@ import { reactionPicker } from '@/scripts/reaction-picker';
 import { getUrlWithoutLoginId } from '@/scripts/login-id';
 import { getAccountFromId } from '@/scripts/get-account-from-id';
 
+
 (async () => {
 	console.info(`Foundkey v${version}`);
 
