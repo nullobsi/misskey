@@ -1,3 +1,4 @@
+import { URL } from 'node:url';
 import promiseLimit from 'promise-limit';
 import { Not, IsNull } from 'typeorm';
 
@@ -77,8 +78,23 @@ async function validateActor(x: IObject, resolver: Resolver): Promise<IActor> {
 			});
 	}
 
-	if (!(typeof x.inbox === 'string' && x.inbox.length > 0)) {
-		throw new Error('invalid Actor: wrong inbox');
+	// check that inbox is a valid and absolute URL
+	// in NodeJS, the first parameter must be an absolute URL or the base URL is required
+	try {
+		new URL(x.inbox)
+	} catch (err) {
+		throw new Error('invalid Actor: wrong inbox', { cause: err });
+	}
+
+	// unify different sharedInbox places
+	x.sharedInbox = x.sharedInbox ?? x.endpoints?.sharedInbox;
+	if (x.sharedInbox != null) {
+		// check that sharedInbox is a valid and absolute URL
+		try {
+			new URL(x.sharedInbox);
+		} catch (err) {
+			delete x.sharedInbox;
+		}
 	}
 
 	if (!(typeof x.preferredUsername === 'string' && x.preferredUsername.length > 0 && x.preferredUsername.length <= 128 && /^\w([\w-.]*\w)?$/.test(x.preferredUsername))) {
@@ -185,7 +201,7 @@ export async function createPerson(value: string | IObject, resolver: Resolver):
 				usernameLower: person.preferredUsername!.toLowerCase(),
 				host,
 				inbox: person.inbox,
-				sharedInbox: person.sharedInbox || (person.endpoints ? person.endpoints.sharedInbox : undefined),
+				sharedInbox: person.sharedInbox,
 				followersUri: person.followers ? getApId(person.followers) : undefined,
 				featured: person.featured ? getApId(person.featured) : undefined,
 				uri: person.id,
@@ -335,7 +351,7 @@ export async function updatePerson(value: IObject | string, resolver: Resolver):
 	const updates = {
 		lastFetchedAt: new Date(),
 		inbox: person.inbox,
-		sharedInbox: person.sharedInbox ?? (person.endpoints ? person.endpoints.sharedInbox : undefined),
+		sharedInbox: person.sharedInbox,
 		followersUri: person.followers ? getApId(person.followers) : undefined,
 		featured: person.featured,
 		emojis: emojiNames,
@@ -382,7 +398,7 @@ export async function updatePerson(value: IObject | string, resolver: Resolver):
 	await Followings.update({
 		followerId: exist.id,
 	}, {
-		followerSharedInbox: person.sharedInbox ?? (person.endpoints ? person.endpoints.sharedInbox : undefined),
+		followerSharedInbox: person.sharedInbox,
 	});
 
 	await updateFeatured(exist.id, resolver).catch(err => apLogger.error(err));
